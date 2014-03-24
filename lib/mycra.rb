@@ -21,13 +21,13 @@ module Mycra
 	DEFAULTS = {
 		# sneakers
 		:sneakers => {
-			:daemonize		=> true,
 			:ack			=> true,
 			:amqp			=> 'amqp://guest:guest@localhost:5672',
 			:vhost			=> '/',
 			:durable		=> true,
 			:heartbeat		=> 2,
 			:workers 		=> 3,
+			:prefetch		=> 1,
 			:exchange		=> 'mycra',
 			:exchange_type	=> :direct,
 			:log			=> STDOUT,
@@ -71,7 +71,7 @@ module Mycra
 		@sneakers = false
 		@connection = false
 		@messanger = false
-		configure_database!(Config[:database], Config[:db_deploy])
+		configure_database!(Config[:database], Config[:db_deploy]) if File.exists?(Config[:database])
 		configure_sneakers!(Config[:sneakers])
 		setup_sneakers_runner!(Config[:sneakers])
 		setup_messanger
